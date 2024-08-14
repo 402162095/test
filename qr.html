@@ -30,7 +30,9 @@
             /* verbose= */ false);
         
         // 开始扫描二维码
-        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        // html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+		html5QrcodeScanner.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+		 
     </script>
 </body>
 </html>
