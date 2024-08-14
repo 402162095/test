@@ -31,6 +31,9 @@
           const config = { fps: 10, qrbox: { width: 250, height: 250 } };
         // 开始扫描二维码
         // html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+		const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+		    /* handle success */
+		};
 		html5QrcodeScanner.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
 		 
     </script>
