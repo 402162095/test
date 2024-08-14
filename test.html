@@ -1,0 +1,36 @@
+  <!DOCTYPE html>
+<html>
+<head>
+  <title>调用 Dart 函数</title>
+</head>
+<body>
+  <button onclick="javascriptMethod()">调用 Dart 函数</button>
+
+  <script>
+  function dartFunction(e) {
+	  // 调用 Dart 函数
+	  console.log(e);
+       console.log(window);
+	  // myDartFunction('Hello from HTML!');
+	
+	}
+    function javascriptMethod() {
+      // 调用 Dart 函数
+        console.log(window);
+   
+      window.parent.postMessage("123456", '*');
+    }
+    function callJsMethod(message) {
+      console.log('Message from Flutter:', message);
+      // 执行相应的操作
+    }
+    function handleMessageFromFlutter(message) {
+            // 这里执行你的逻辑，例如调用IFrame中的方法
+            console.log('Received message from Flutter:', message);
+        }
+   window.addEventListener('message', callJsMethod);
+  </script>
+
+ 
+</body>
+</html>

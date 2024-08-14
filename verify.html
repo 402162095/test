@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+		<!-- 验证码程序依赖(必须)。请勿修改以下程序依赖，如通过其他手段规避加载，会导致验证码无法正常更新，对抗能力无法保证，甚至引起误拦截。 -->
+		<script src="https://sg.captcha.qcloud.com/TCaptcha-global.js"></script>
+
+	</head>
+	<body>
+		<!-- <button id="CaptchaId" type="button">关闭</button> -->
+	</body>
+	<script>
+		// 定义回调函数
+		function callback(res) {
+			if (res.ret === 0) {
+				// 复制结果至剪切板
+				var str = '【randstr】->【' + res.randstr + '】      【ticket】->【' + res.ticket + '】';
+
+				var ipt = document.createElement('input');
+				ipt.value = str;
+				document.body.appendChild(ipt);
+				ipt.select();
+				document.execCommand("Copy");
+				document.body.removeChild(ipt);
+				
+			}
+		}
+		// 定义验证码js加载错误处理函数
+		function loadErrorCallback() {
+			var appid = 'CaptchaAppId';
+			// 生成容灾票据或自行做其它处理
+			var ticket = 'terror_1001_' + appid + '_' + Math.floor(new Date().getTime() / 1000);
+			callback({
+				ret: 0,
+				randstr: '@' + Math.random().toString(36).substr(2),
+				ticket,
+				errorCode: 1001,
+				errorMessage: 'jsload_error',
+			});
+		}
+
+		// 定义验证码触发事件
+		window.onload = function() {
+			try {
+				var captcha = new TencentCaptcha('189997131', (res) => {
+					if (res.ret == 0) {
+						window.parent.postMessage({
+							"randstr": res.randstr,
+							"ticket": res.ticket
+						}, "*");
+					} else if (res.ret == 2) {
+						window.parent.postMessage("closeWidnow", "*");
+					}
+
+				}, {});
+				// 调用方法，显示验证码
+				captcha.show();
+			} catch (error) {
+				// 加载异常，调用验证码js加载错误处理函数
+				loadErrorCallback();
+			}
+
+		}
+	</script>
+</html>

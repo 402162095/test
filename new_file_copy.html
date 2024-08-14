@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://unpkg.com/flutter-sdk/web.js"></script>
+ <!-- 通过这种方式将 Dart 代码嵌入到 HTML 中 -->
+  <script defer src="main.dart.js"></script>
+<style>
+ .woot--bubble-holder{
+	visibility: hidden !important;
+}
+
+</style>
+</head>
+<body>
+<script>
+
+	(function (d, t) {
+	      var BASE_URL = "https://demo.bcpay.pro";
+	      var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+	      g.src = BASE_URL + "/packs/js/sdk.js";
+	      g.defer = true;
+	      g.async = true;
+	      s.parentNode.insertBefore(g, s);
+	      g.onload = function () {
+	        window.chatwootSDK.run({
+	          websiteToken: 'W7qUoH5VeRLEj7wd4n42wo72',
+	          baseUrl: BASE_URL
+	        })
+	      }
+	    })(document, "script");
+		
+	window.onload = function(){
+		window.$chatwoot.toggle("open");
+		 console.log(window.$chatwoot);
+	};
+	
+
+	 window.addEventListener('message', function (e){
+		 
+		if(e.data != null && JSON.stringify(e.data).includes("closeWindow")){
+			console.log(e.data);
+			dart.closeWindow('closeWindow');
+		}
+	
+	 });
+
+	
+</script>
+
+</body>
+</html>
