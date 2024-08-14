@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+</head>
+<body>
+    <h1>QR Code Scanner</h1>
+    <div id="qr-reader" style="width:500px"></div>
+    <div id="qr-reader-results"></div>
+
+    <script>
+        function onScanSuccess(decodedText, decodedResult) {
+            // 处理解码结果
+            document.getElementById('qr-reader-results').innerHTML = `Scanned result: ${decodedText}`;
+            console.log(`Scan result: ${decodedText}`, decodedResult);
+        }
+
+        function onScanFailure(error) {
+            // 处理扫描失败，通常在调试时会使用
+            console.warn(`Scan error: ${error}`);
+        }
+
+        // 创建Html5QrcodeScanner对象，并配置其选项
+        const html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", 
+            { fps: 10, qrbox: 250 },
+            /* verbose= */ false);
+        
+        // 开始扫描二维码
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    </script>
+</body>
+</html>
