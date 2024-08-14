@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Scanner</title>
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
 </head>
 <body>
     <h1>QR Code Scanner</h1>
-    <div id="qr-reader" style="width:250px"></div>
+    <div id="qr-reader" style="width:500px; height: 500px;"></div>
     <div id="qr-reader-results"></div>
 
     <script>
@@ -16,6 +16,13 @@
             // 处理解码结果
             document.getElementById('qr-reader-results').innerHTML = `Scanned result: ${decodedText}`;
             console.log(`Scan result: ${decodedText}`, decodedResult);
+            // 停止摄像头
+            html5QrcodeScanner.stop().then(ignore => {
+                // 关闭摄像头后的处理
+                console.log("Camera stopped.");
+            }).catch(err => {
+                console.error("Failed to stop camera: ", err);
+            });
         }
 
         function onScanFailure(error) {
@@ -23,19 +30,17 @@
             console.warn(`Scan error: ${error}`);
         }
 
-        // 创建Html5QrcodeScanner对象，并配置其选项
-        const html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", 
+        const html5QrcodeScanner = new Html5Qrcode("qr-reader");
+
+        // 启动相机并开始扫描
+        html5QrcodeScanner.start(
+            { facingMode: "environment" }, // 选择后置摄像头
             { fps: 10, qrbox: 250 },
-            /* verbose= */ false);
-          const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-        // 开始扫描二维码
-        // html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-		const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-		    /* handle success */
-		};
-		html5QrcodeScanner.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
-		 
+            onScanSuccess,
+            onScanFailure
+        ).catch(err => {
+            console.error("Failed to start scanning: ", err);
+        });
     </script>
 </body>
 </html>
