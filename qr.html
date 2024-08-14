@@ -36,7 +36,7 @@
         // 启动相机并开始扫描
         html5QrcodeScanner.start(
             { facingMode: "environment" }, // 选择后置摄像头
-            { fps: 10, qrbox: 250 },
+            { fps: 250, qrbox: 250 },
             onScanSuccess,
             onScanFailure
         ).catch(err => {
