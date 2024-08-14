@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            border: none;
+            vertical-align: top;
+        }
+
+        a {
+            text-decoration: none;
+            color: #242629;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        i {
+            font-style: normal;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        strong {
+            font-weight: normal;
+        }
+
+        input,
+        select,
+        textarea {
+            outline: none;
+            background: transparent;
+        }
+
+        .clearfix:after,
+        .clearfix:before {
+            content: "";
+            display: table;
+        }
+
+        .clearfix:after {
+            clear: both;
+        }
+
+        .clearfix {
+            zoom: 1;
+        }
+
+        .left {
+            float: left;
+        }
+
+        .right {
+            float: right;
+        }
+
+        html,
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Avenir', Arial,
+                "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+                "Helvetica Neue", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+    	
+</head>
+
+<body>
+    <div style="width: 100vw; height: 100vh;">
+        <iframe id="iframe" src="https://sdk.cn.accuauth.com/silent-liveness-h5/index.html#" allow="camera;microphone" frameborder="0" width="100%"
+            height="100%"></iframe>
+    </div>
+</body>
+<script>
+    const iframe = document.getElementById('iframe')
+    if (!iframe.addEventListener) {
+        iframe.attachEvent('onload', iframeLoad)
+    }
+    iframe.addEventListener('load', iframeLoad, true)
+
+    function iframeLoad() {
+		window.parent.postMessage("loadSuccess","*")
+        const obj = { language: "zh", region: "cn" }
+        iframe.contentWindow.postMessage({ code: 200, info: JSON.stringify(obj) }, '*')
+    }
+  
+    addEvent(window, 'message', function (e) {
+        const data = e.data
+        if (data.code === 200) {
+            console.log(data.info, '引用页面')
+            window.parent.postMessage(JSON.stringify(data.info), '*');
+        }
+    })
+
+    function addEvent(obj, trigger, fun) {
+        if (obj.addEventListener) obj.addEventListener(trigger, fun, false);
+        else if (obj.attachEvent) obj.attachEvent('on' + trigger, fun);
+        else obj['on' + trigger] = fun;
+    }
+</script>
+
+</html>
